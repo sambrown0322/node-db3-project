@@ -9,7 +9,17 @@ function findById(id) {
 }
 
 function findSteps(id) {
-  return db("schemes").where({ id: id });
+  //   findById(id);
+  return db
+    .select(
+      "steps.id",
+      "steps.step_number",
+      "steps.instructions",
+      "schemes.scheme_name"
+    )
+    .from("steps")
+    .join("schemes", "steps.scheme_id", "=", "schemes.id")
+    .where({ scheme_id: id });
 }
 
 function add(scheme) {
@@ -23,4 +33,5 @@ function update(changes, id) {
 function remove(id) {
   return db("schemes").delete().where({ id });
 }
+
 module.exports = { find, findById, findSteps, add, update, remove };
